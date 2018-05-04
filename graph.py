@@ -43,13 +43,37 @@ for i in range(len(time)):
 	time[i] *= .000000001
 
 
-
 x_s = smooth(x,30)
 
+ind = -1
+for i in range(len(time)):
+	if time[i] > 10:
+		# print i
+		ind = i
+		break
+
+
+time_new = time[ind:]
+x_s_new = x_s[ind:]
+
+
+step_count = 0
+below = False
+
+for i in range(len(x_s_new)-1):
+	if below == False and x_s_new[i-1] < x_s_new[i] and x_s_new[i+1] < x_s_new[i] and x_s_new[i] > 2 and x_s_new[i] < 4:
+		step_count += 1
+		below = True
+
+	if x_s_new[i] < -1:
+		below = False
+
+
+print step_count
 
 plt.xlabel('Time (seconds)')
 plt.ylabel('Rotation (r/s)')
-plt.plot(time, x_s, label = "X")
+plt.plot(time_new, x_s_new, label = "X")
 # plt.plot(time, y, label = "Y")
 # plt.plot(time, z, label = "Z")
 plt.legend(bbox_to_anchor=(1.12, 1.15))
