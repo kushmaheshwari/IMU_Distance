@@ -1,0 +1,6 @@
+Manufacturer: samsung
+Model: SGH-M919
+Serial: 50e4935a
+First Sensor Event Millisecond: 1525646317825
+Sensor Event Timestamp Unit: NanoSecond
+
