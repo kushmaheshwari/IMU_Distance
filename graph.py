@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import scipy.fftpack
 import numpy as np
 
-filename = 'Accelerometer_Walking.csv'  #Just change this for eachh graph
+filename = '23_steps/Accelerometer.csv'  #Just change this for eachh graph
 
 time = []
 x = []
@@ -45,36 +45,49 @@ for i in range(len(time)):
 
 x_s = smooth(x,30)
 
-ind = -1
-for i in range(len(time)):
-	if time[i] > 10:
-		# print i
-		ind = i
-		break
+y_s = smooth(y,30)
+y_s -= 9.8
+
+# ind = -1
+# for i in range(len(time)):
+# 	if time[i] > 7:
+# 		# print i
+# 		ind = i
+# 		break
 
 
-time_new = time[ind:]
-x_s_new = x_s[ind:]
+# time_new = time[ind:]
+# x_s_new = x_s[ind:]
 
 
 step_count = 0
 below = False
 
-for i in range(len(x_s_new)-1):
-	if below == False and x_s_new[i-1] < x_s_new[i] and x_s_new[i+1] < x_s_new[i] and x_s_new[i] > 2 and x_s_new[i] < 4:
+dots = [] 
+
+
+for i in range(len(y_s)-1):
+	if below == False and y_s[i-1] < y_s[i] and y_s[i+1] < y_s[i] and y_s[i] > .5:
 		step_count += 1
 		below = True
-
-	if x_s_new[i] < -1:
+		dots.append((time[i],y_s[i]))
+	if y_s[i] < 0:
 		below = False
+
+
+
 
 
 print step_count
 
 plt.xlabel('Time (seconds)')
 plt.ylabel('Rotation (r/s)')
-plt.plot(time_new, x_s_new, label = "X")
-# plt.plot(time, y, label = "Y")
+plt.plot(time, y_s, label = "Y_S")
+
+for i in range(len(dots)):
+	plt.plot(dots[i][0],dots[i][1],'ro')
+
+# plt.plot(time, x_s, label = "Y")
 # plt.plot(time, z, label = "Z")
 plt.legend(bbox_to_anchor=(1.12, 1.15))
 plt.title('MoveLeftAndRight Gyroscope')
